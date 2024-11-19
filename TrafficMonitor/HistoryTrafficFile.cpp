@@ -13,7 +13,8 @@ CHistoryTrafficFile::~CHistoryTrafficFile()
 
 void CHistoryTrafficFile::Save() const
 {
-	ofstream file{ m_file_path };
+	//michael
+	/*ofstream file{m_file_path};
 	char buff[64];
 	sprintf_s(buff, "lines: \"%u\"", static_cast<unsigned int>(m_history_traffics.size()));			//在第一行写入总行数
 	file << buff << std::endl;
@@ -25,7 +26,7 @@ void CHistoryTrafficFile::Save() const
 			sprintf_s(buff, "%.4d/%.2d/%.2d %llu/%llu", history_traffic.year, history_traffic.month, history_traffic.day, history_traffic.up_kBytes, history_traffic.down_kBytes);
 		file << buff << std::endl;
 	}
-	file.close();
+	file.close();*/
 }
 
 void CHistoryTrafficFile::Load()

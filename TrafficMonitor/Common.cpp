@@ -137,9 +137,10 @@ CString CCommon::DataSizeToString(unsigned long long size, const PublicSettingDa
     case SpeedUnit::KBPS:
         if (cfg.speed_short_mode)
         {
-            if (size < 1024 * 10)                   //10KB以下保留1位小数
+			//michael
+            /*if (size < 1024 * 10)                   //10KB以下保留1位小数
                 value_str.Format(_T("%.1f"), size / 1024.0f);
-            else                    //10KB以上保留整数
+            else                    //10KB以上保留整数*/
                 value_str.Format(_T("%.0f"), size / 1024.0f);
             if (!cfg.hide_unit)
                 unit_str = _T("K");

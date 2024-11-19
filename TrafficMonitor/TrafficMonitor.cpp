@@ -946,14 +946,15 @@ BOOL CTrafficMonitorApp::InitInstance()
     m_config_dir = L".\\";
     m_skin_path = L".\\skins";
 #else
+    //michael
     if (m_general_data.portable_mode)
-        m_config_dir = m_module_dir;
+        m_config_path = m_module_dir + L"config.ini";
     else
-        m_config_dir = m_appdata_dir;
+        m_config_path = m_appdata_dir + L"config.ini";        
     m_skin_path = m_module_dir + L"skins";
 #endif
     //AppData里面的程序配置文件路径
-    m_config_path = m_config_dir + L"config.ini";
+    m_config_dir = m_appdata_dir;
     m_history_traffic_path = m_config_dir + L"history_traffic.dat";
     m_log_path = m_config_dir + L"error.log";
 
