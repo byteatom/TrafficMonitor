@@ -67,18 +67,20 @@ const std::map<CommonDisplayItem, wstring>& DispStrings::GetAllItems() const
 
 void DispStrings::operator=(const DispStrings& disp_str)
 {
-    map_str = disp_str.map_str;
+    std::map<CommonDisplayItem, wstring> tmp = disp_str.map_str;
     //如果赋值的字符串是定义的无效字符串，则不赋值
-    for (auto& iter = map_str.begin(); iter != map_str.end(); ++iter)
+    for (auto iter = tmp.begin(); iter != tmp.end(); ++iter)
     {
         if (iter->second == NONE_STR)
-            iter->second.clear();
+            iter->second = map_str[iter->first];
     }
+
+    map_str = tmp;
 }
 
 bool DispStrings::IsInvalid() const
 {
-    for (auto& iter = map_str.begin(); iter != map_str.end(); ++iter)
+    for (auto iter = map_str.begin(); iter != map_str.end(); ++iter)
     {
         if (iter->second == NONE_STR)
             return true;
@@ -156,7 +158,7 @@ std::set<std::wstring>& StringSet::data()
 
 bool TaskBarSettingData::IsTaskbarTransparent() const
 {
-    if (CWindowsSettingHelper::IsWindows10LightTheme() || theApp.m_win_version.IsWindows8Or8point1() || theApp.m_is_windows11_taskbar)
+    if (CWindowsSettingHelper::IsWindows10LightTheme() || theApp.m_win_version.IsWindows8Or8point1() || theApp.IsWindows11Taskbar())
         return (transparent_color == back_color);
     else
         return transparent_color == 0;
@@ -166,7 +168,7 @@ void TaskBarSettingData::SetTaskabrTransparent(bool transparent)
 {
     if (transparent)
     {
-        if (CWindowsSettingHelper::IsWindows10LightTheme() || theApp.m_win_version.IsWindows8Or8point1() || theApp.m_is_windows11_taskbar)
+        if (CWindowsSettingHelper::IsWindows10LightTheme() || theApp.m_win_version.IsWindows8Or8point1() || theApp.IsWindows11Taskbar())
         {
             //浅色模式下要设置任务栏窗口透明，只需将透明色设置成和背景色一样即可
             CCommon::TransparentColorConvert(back_color);
@@ -196,20 +198,28 @@ void TaskBarSettingData::ValidItemSpace()
         item_space = 32;
 }
 
-void TaskBarSettingData::ValidWindowOffsetTop()
-{
-    if (window_offset_top < -5)
-        window_offset_top = -5;
-    if (window_offset_top > 20)
-        window_offset_top = 20;
-}
-
 void TaskBarSettingData::ValidVerticalMargin()
 {
     if (vertical_margin < -10)
         vertical_margin = -10;
     if (vertical_margin > 10)
         vertical_margin = 10;
+}
+
+void TaskBarSettingData::ValidWindowOffsetTop()
+{
+    if (window_offset_top < -20)
+        window_offset_top = -20;
+    if (window_offset_top > 20)
+        window_offset_top = 20;
+}
+
+void TaskBarSettingData::ValidWindowOffsetLeft()
+{
+    if (window_offset_left < -800)
+        window_offset_top = -800;
+    if (window_offset_top > 800)
+        window_offset_top = 800;
 }
 
 unsigned __int64 TaskBarSettingData::GetNetspeedFigureMaxValueInBytes() const
